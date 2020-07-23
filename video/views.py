@@ -10,3 +10,10 @@ class ListVideo(APIView):
         videos = Video.objects.all()
         video_json = VideoSerializer(videos, many=True)
         return Response(video_json.data)
+    
+    def post(self, request):
+        video_json = VideoSerializer(data = request.data)
+        if video_json.is_valid():
+            video_json.save()
+            return Response(video_json.data, status= 201)
+        return Response(video_json.errors, status= 400)
